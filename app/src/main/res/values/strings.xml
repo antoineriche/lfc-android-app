@@ -24,6 +24,7 @@
     <string name="remove_prestation">Supprimer la prestation</string>
     <string name="handle_edition_service">Gérer le staff</string>
     <string name="amount">Montant</string>
+    <string name="name">Nom</string>
     <string name="default_amount">0</string>
     <string name="fetching_editions">Récupération des éditions</string>
     <string name="add_edition">Ajouter une édition</string>

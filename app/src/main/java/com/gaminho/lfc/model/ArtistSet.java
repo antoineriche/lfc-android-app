@@ -1,6 +1,7 @@
 package com.gaminho.lfc.model;
 
 import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
 import com.x5.util.DataCapsule;
 
 import lombok.Getter;
@@ -11,6 +12,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@IgnoreExtraProperties
 public class ArtistSet implements DataCapsule, LFCPrestation {
     private String artist;
     private int duration;

@@ -3,6 +3,9 @@ package com.gaminho.lfc.activity.edition;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -13,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.Observable;
 import androidx.databinding.ObservableField;
 
+import com.gaminho.lfc.R;
 import com.gaminho.lfc.activity.edition.dialog.AddEditionServiceDialog;
 import com.gaminho.lfc.activity.edition.dialog.AddShowcaseDialog;
 import com.gaminho.lfc.activity.edition.dialog.UpdatePrestationDialog;
@@ -57,7 +61,8 @@ public class EditionActivity extends AppCompatActivity implements View.OnClickLi
         DatePickerDialog.OnDateSetListener,
         OnCompleteListener<Void>,
         DBService.FetchingListener<LFCEdition>,
-        Html2Pdf.OnCompleteConversion, ELVServiceAndShowAdapter.OnAddPrestationClickListener {
+        Html2Pdf.OnCompleteConversion,
+        ELVServiceAndShowAdapter.OnAddPrestationClickListener {
 
     public static final String ARG_EDITION_ID = "edition-id";
 
@@ -123,9 +128,6 @@ public class EditionActivity extends AppCompatActivity implements View.OnClickLi
 
         binding.btnSaveEdition.setEnabled(false);
         binding.btnSaveEdition.setOnClickListener(this);
-
-        binding.btnEditFacture.setOnClickListener(this);
-
         binding.etPickDate.setOnClickListener(this);
 
         this.formObserver = io.reactivex.rxjava3.core.Observable
@@ -162,6 +164,23 @@ public class EditionActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.activity_edition_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_edit_facture) {
+            final LFCEdition edition = buildEditionFromCurrentView();
+            editEditionFacture(edition, this);
+        }
+        return true;
+    }
+
+    @Override
     public void onClick(View view) {
         if (binding.etPickDate.equals(view)) {
             new DatePickerDialog(EditionActivity.this, this,
@@ -170,9 +189,6 @@ public class EditionActivity extends AppCompatActivity implements View.OnClickLi
         } else if (binding.btnSaveEdition.equals(view)) {
             final LFCEdition edition = buildEditionFromCurrentView();
             saveEdition(edition);
-        } else if (binding.btnEditFacture.equals(view)) {
-            final LFCEdition edition = buildEditionFromCurrentView();
-            editEditionFacture(edition, this);
         }
     }
 
@@ -207,6 +223,10 @@ public class EditionActivity extends AppCompatActivity implements View.OnClickLi
                 .collect(Collectors.groupingBy(LFCPrestation::getPrestationType));
 
         edition.setEditionServices(prestations.getOrDefault(LFCPrestation.EDITION_SERVICE, Collections.emptyList()).stream()
+                .map(lfcPrestation -> (EditionService) lfcPrestation)
+                .collect(Collectors.toList()));
+
+        edition.getEditionServices().addAll(prestations.getOrDefault(LFCPrestation.JUDGE, Collections.emptyList()).stream()
                 .map(lfcPrestation -> (EditionService) lfcPrestation)
                 .collect(Collectors.toList()));
 

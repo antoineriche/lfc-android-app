@@ -72,22 +72,29 @@ public class AddEditionServiceDialog extends AddingItemDialog<EditionService, Ed
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 final ServiceType type = (ServiceType) binding.spinnerStaffType.getSelectedItem();
-                mLFCStaffService.getAllStaffByType(new DBService.FetchingCollectionListener<LFCStaff>() {
-                    @Override
-                    public void onFetched(Collection<LFCStaff> entities) {
-                        final List<String> servicePeople = entities.stream()
-                                .map(LFCStaff::getName)
-                                .collect(Collectors.toList());
+                if (ServiceType.EXTRA == type ) {
+                    binding.llExtra.setVisibility(View.VISIBLE);
+                    binding.spinnerStaffPeople.setVisibility(View.GONE);
+                } else {
+                    binding.llExtra.setVisibility(View.GONE);
+                    binding.spinnerStaffPeople.setVisibility(View.VISIBLE);
+                    mLFCStaffService.getAllStaffByType(new DBService.FetchingCollectionListener<LFCStaff>() {
+                        @Override
+                        public void onFetched(Collection<LFCStaff> entities) {
+                            final List<String> servicePeople = entities.stream()
+                                    .map(LFCStaff::getName)
+                                    .collect(Collectors.toList());
 
-                        servicePeopleAdapter.updateList(servicePeople);
-                        binding.spinnerStaffPeople.setEnabled(true);
-                    }
+                            servicePeopleAdapter.updateList(servicePeople);
+                            binding.spinnerStaffPeople.setEnabled(true);
+                        }
 
-                    @Override
-                    public void onError(DatabaseError error) {
-                        binding.spinnerStaffPeople.setEnabled(false);
-                    }
-                }, type);
+                        @Override
+                        public void onError(DatabaseError error) {
+                            binding.spinnerStaffPeople.setEnabled(false);
+                        }
+                    }, type);
+                }
             }
 
             @Override
@@ -103,7 +110,13 @@ public class AddEditionServiceDialog extends AddingItemDialog<EditionService, Ed
         final ServiceType type = (ServiceType) binding.spinnerStaffType.getSelectedItem();
         editionService.setType(type);
 
-        final String name = (String) binding.spinnerStaffPeople.getSelectedItem();
+        final String name;
+        if (ServiceType.EXTRA == type) {
+            name = binding.etExtraName.getText().toString();
+        } else {
+            name = (String) binding.spinnerStaffPeople.getSelectedItem();
+        }
+
         editionService.setName(name);
 
         final double price = StringUtils.isNotBlank(binding.etPrice.getText()) ?

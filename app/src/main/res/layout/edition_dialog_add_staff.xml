@@ -17,6 +17,31 @@
         android:layout_height="wrap_content"/>
 
     <LinearLayout
+        android:id="@+id/ll_extra"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/name"
+            android:textStyle="bold"/>
+
+        <EditText
+            android:id="@+id/et_extra_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="textEnd"
+            android:hint="@string/name"
+            android:inputType="textCapWords" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:weightSum="2"

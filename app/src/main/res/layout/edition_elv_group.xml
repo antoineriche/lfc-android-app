@@ -2,6 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingStart="?android:attr/expandableListPreferredItemPaddingLeft"
+    android:paddingEnd="8dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -9,17 +11,39 @@
         android:id="@+id/prestation_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:text="@string/amount"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintTop_toBottomOf="parent"
-        android:paddingStart="?android:attr/expandableListPreferredItemPaddingLeft"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:textColor="@android:color/black"
         android:paddingTop="10dp"
         android:paddingBottom="10dp" />
 
+    <LinearLayout
+        android:id="@+id/custom_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_button_bg_selector"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <TextView
+            android:focusable="false"
+            android:paddingVertical="2dp"
+            android:textSize="16sp"
+            android:textAlignment="center"
+            android:paddingHorizontal="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+"/>
+
+    </LinearLayout>
+
     <Button
         android:id="@+id/btn_add_presta"
-        android:visibility="visible"
+        android:visibility="gone"
         android:focusable="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

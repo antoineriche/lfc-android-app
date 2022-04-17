@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".activity.edition.EditionActivity">
 
     <TextView
         style="@style/TextViewLoading"
         android:id="@+id/tv_loading_edition"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         android:text="@string/fetching_edition"/>
 
     <LinearLayout
+        android:id="@+id/ll_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/tv_loading_edition"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         android:orientation="horizontal"
         android:weightSum="2"
         android:padding="8dp">
@@ -37,8 +45,12 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/ll_1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         android:padding="8dp">
 
         <TextView
@@ -60,8 +72,12 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/ll_2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         android:padding="8dp">
 
         <TextView
@@ -81,6 +97,9 @@
 
     <ExpandableListView
         android:id="@+id/elv_staff_and_show"
+        app:layout_constraintTop_toBottomOf="@+id/ll_3"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
@@ -92,13 +111,9 @@
         android:layout_height="wrap_content"
         android:enabled="false"
         android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         android:text="@string/save"/>
 
-    <Button
-        android:id="@+id/btn_edit_facture"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:text="@string/edit_edition_facture"/>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

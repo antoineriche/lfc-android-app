@@ -2,6 +2,7 @@ package com.gaminho.lfc.model;
 
 import com.gaminho.lfc.model.enumeration.ServiceType;
 import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
 import com.x5.util.DataCapsule;
 
 import lombok.Getter;
@@ -12,6 +13,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@IgnoreExtraProperties
 public class EditionService implements DataCapsule, LFCPrestation {
     private ServiceType type;
     private String name;
@@ -56,6 +58,6 @@ public class EditionService implements DataCapsule, LFCPrestation {
     @Exclude
     @Override
     public int getPrestationType() {
-        return LFCPrestation.EDITION_SERVICE;
+        return type == ServiceType.JUDGE ? LFCPrestation.JUDGE : LFCPrestation.EDITION_SERVICE;
     }
 }

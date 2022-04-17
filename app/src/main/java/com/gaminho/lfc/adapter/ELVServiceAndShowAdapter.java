@@ -31,7 +31,7 @@ public final class ELVServiceAndShowAdapter extends BaseExpandableListAdapter {
         this.mLFCPrestations = prestations;
         this.expandableListDetail = prestations.stream()
                 .collect(Collectors.groupingBy(LFCPrestation::getPrestationType));
-        this.prestationTypes = Arrays.asList(LFCPrestation.SHOWCASE, LFCPrestation.EDITION_SERVICE);
+        this.prestationTypes = Arrays.asList(LFCPrestation.SHOWCASE, LFCPrestation.EDITION_SERVICE, LFCPrestation.JUDGE);
         this.listener = listener;
     }
 
@@ -93,11 +93,13 @@ public final class ELVServiceAndShowAdapter extends BaseExpandableListAdapter {
             title = "Services";
         } else if (LFCPrestation.SHOWCASE.equals(type)) {
             title = "Showcase";
+        } else if (LFCPrestation.JUDGE.equals(type)) {
+            title = "Jury";
         } else {
             title = "Autre";
         }
         groupBinding.prestationType.setText(title);
-        groupBinding.btnAddPresta.setOnClickListener(v -> listener.onPrestationAddClick(type));
+        groupBinding.customBtn.setOnClickListener(v -> listener.onPrestationAddClick(type));
 
         convertView.setTag(groupBinding);
         return convertView;
