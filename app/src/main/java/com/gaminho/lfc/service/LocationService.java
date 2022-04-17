@@ -12,7 +12,7 @@ public final class LocationService extends DBService<Location> {
 
     public void saveLocation(final Location location,
                              final OnCompleteListener<Void> listener) {
-        super.saveEntity(location.buildId(), location, listener);
+        super.saveEntity(location, listener);
     }
 
     public void getAllLocations(FetchingCollectionListener<Location> listener) {

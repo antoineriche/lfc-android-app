@@ -5,17 +5,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.gaminho.lfc.activity.edition.EditionActivity;
 import com.gaminho.lfc.adapter.LFCEditionAdapter;
-import com.gaminho.lfc.databinding.FragmentGalleryBinding;
+import com.gaminho.lfc.databinding.FragmentEditionBinding;
 import com.gaminho.lfc.model.LFCEdition;
 import com.gaminho.lfc.service.DBService;
 import com.gaminho.lfc.service.LFCEditionService;
@@ -26,27 +24,20 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
-public class GalleryFragment extends Fragment implements DBService.FetchingCollectionListener<LFCEdition>,
+public class EditionFragment extends Fragment implements DBService.FetchingCollectionListener<LFCEdition>,
         LFCEditionAdapter.OnEditionPickListener {
 
-    private GalleryViewModel galleryViewModel;
-    private FragmentGalleryBinding binding;
+    private FragmentEditionBinding binding;
     private final LFCEditionService editionService = new LFCEditionService();
     private LFCEditionAdapter mAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        binding = FragmentGalleryBinding.inflate(inflater, container, false);
+        binding = FragmentEditionBinding.inflate(inflater, container, false);
         binding.tvLoadingEditions.setVisibility(View.VISIBLE);
 
-        galleryViewModel =
-                new ViewModelProvider(this).get(GalleryViewModel.class);
-
         View root = binding.getRoot();
-
-        final TextView textView = binding.tvLoadingEditions;
-        galleryViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
         binding.addEdition.setOnClickListener(view -> goToEditionActivity(null));
         return root;

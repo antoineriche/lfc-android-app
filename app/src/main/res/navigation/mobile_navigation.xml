@@ -13,13 +13,13 @@
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="com.gaminho.lfc.activity.ui.gallery.GalleryFragment"
+        android:name="com.gaminho.lfc.activity.ui.gallery.EditionFragment"
         android:label="@string/menu_edition"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/fragment_edition" />
 
     <fragment
         android:id="@+id/nav_slideshow"
-        android:name="com.gaminho.lfc.activity.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:name="com.gaminho.lfc.activity.ui.liquidity.LiquidityFragment"
+        android:label="@string/menu_liquidity"
+        tools:layout="@layout/fragment_liquidity" />
 </navigation>

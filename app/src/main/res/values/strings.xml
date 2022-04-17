@@ -11,7 +11,7 @@
 
     <string name="menu_home">Home</string>
     <string name="menu_edition">Édition</string>
-    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_liquidity">Trésorerie</string>
 
     <string name="save">Enregistrer</string>
     <string name="delete">Supprimer</string>
@@ -42,4 +42,19 @@
     <string name="edition">Edition</string>
     <string name="fetching_edition">Récupération de l\'édition</string>
     <string name="edit_edition_facture">Éditer la facture</string>
+
+    <!--LIQUIDITY FRAGMENT-->
+    <string name="bank_account">Banque</string>
+    <string name="billets500">Billets 500</string>
+    <string name="billets200">Billets 200</string>
+    <string name="billets100">Billets 100</string>
+    <string name="billets50">Billets 50</string>
+    <string name="billets20">Billets 20</string>
+    <string name="billets10">Billets 10</string>
+    <string name="billets5">Billets 5</string>
+    <string name="coins2">Pièces 2</string>
+    <string name="coins1">Pièces 1</string>
+    <string name="coins05">Pièces 0.50</string>
+    <string name="coins02">Pièces 0.20</string>
+    <string name="coins01">Pièces 0.10</string>
 </resources>

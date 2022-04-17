@@ -29,8 +29,7 @@ public final class LFCEditionService extends DBService<LFCEdition> {
 
     public void saveEdition(final LFCEdition edition,
                             final OnCompleteListener<Void> listener) {
-        final String id = String.valueOf(edition.getEdition());
-        super.saveEntity(id, edition, listener);
+        super.saveEntity(edition, listener);
     }
 
     public void getAllEditions(FetchingCollectionListener<LFCEdition> listener) {

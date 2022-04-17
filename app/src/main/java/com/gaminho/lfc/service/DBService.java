@@ -97,11 +97,10 @@ public abstract class DBService<T extends DatabaseEntity> {
         }
     }
 
-    protected void saveEntity(@NonNull final String id,
-                              final T entity,
+    protected void saveEntity(final T entity,
                               final OnCompleteListener<Void> listener) {
-        this.mReference.child(id).setValue(entity).addOnCompleteListener(task -> {
-            cache.put(id, entity);
+        this.mReference.child(entity.buildId()).setValue(entity).addOnCompleteListener(task -> {
+            cache.put(entity.buildId(), entity);
             if (Objects.nonNull(listener)) {
                 listener.onComplete(task);
             }

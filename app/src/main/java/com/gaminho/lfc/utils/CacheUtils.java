@@ -4,6 +4,7 @@ import android.util.LruCache;
 
 import com.gaminho.lfc.model.LFCEdition;
 import com.gaminho.lfc.model.LFCStaff;
+import com.gaminho.lfc.model.Liquidity;
 import com.gaminho.lfc.model.Location;
 
 /**
@@ -14,6 +15,7 @@ public final class CacheUtils {
     public static final LruCache<String, Location> LOCATION_CACHE = new LruCache<>(buildCacheSizeInMo(1));
     public static final LruCache<String, LFCEdition> LFC_EDITION_CACHE = new LruCache<>(buildCacheSizeInMo(1));
     public static final LruCache<String, LFCStaff> STAFF_CACHE = new LruCache<>(buildCacheSizeInMo(1));
+    public static final LruCache<String, Liquidity> LIQUIDITY_CACHE = new LruCache<>(buildCacheSizeInMo(1));
     public static final LruCache<String, Object> DEFAULT_CACHE = new LruCache<>(buildCacheSizeInMo(1));
 
     public static <T> LruCache<String, T> getCache(final Class<T> tClass) {
@@ -23,6 +25,8 @@ public final class CacheUtils {
             return (LruCache<String, T>) LFC_EDITION_CACHE;
         } else if (tClass.equals(LFCStaff.class)) {
             return (LruCache<String, T>) STAFF_CACHE;
+        } else if (tClass.equals(Liquidity.class)) {
+            return (LruCache<String, T>) LIQUIDITY_CACHE;
         } else {
             return (LruCache<String, T>) DEFAULT_CACHE;
         }

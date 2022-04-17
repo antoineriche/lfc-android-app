@@ -9,12 +9,7 @@ public final class DBConstants {
     public static final String DB_TABLE_EDITION = "edition";
     public static final String DB_TABLE_LOCATION = "location";
     public static final String DB_TABLE_STAFF = "staff";
-    public static final String DB_TABLE_PHOTO = "photo";
-    public static final String DB_TABLE_VIDEO = "video";
-    public static final String DB_TABLE_LIGHT = "light";
-    public static final String DB_TABLE_SOUND = "sound";
-    public static final String DB_TABLE_DJ = "dj";
-    public static final String DB_TABLE_JUDGE = "judge";
+    public static final String DB_TABLE_LIQUIDITY = "liquidity";
 
     private DBConstants() {
     }

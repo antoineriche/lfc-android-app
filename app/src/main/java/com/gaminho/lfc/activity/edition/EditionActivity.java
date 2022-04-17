@@ -136,7 +136,6 @@ public class EditionActivity extends AppCompatActivity implements View.OnClickLi
                         (editionNumber, sDate) -> Stream.of(editionNumber, sDate).noneMatch(StringUtils::isBlank))
                 .subscribe(isValid -> binding.btnSaveEdition.setEnabled(isValid));
 
-        mETEdition = binding.etEditionNumber;
         this.obsEdition.addOnPropertyChangedCallback(fetchEditionListener);
 
         if (StringUtils.isNotBlank(getIntent().getStringExtra(ARG_EDITION_ID))) {

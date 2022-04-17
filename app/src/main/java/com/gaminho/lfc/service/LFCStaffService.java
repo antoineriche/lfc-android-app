@@ -61,7 +61,7 @@ public final class LFCStaffService extends DBService<LFCStaff> {
 
     public void saveStaff(final LFCStaff staff,
                           final OnCompleteListener<Void> listener) {
-        super.saveEntity(staff.buildId(), staff, listener);
+        super.saveEntity(staff, listener);
     }
 
     public void getAllStaff(FetchingCollectionListener<LFCStaff> listener) {
