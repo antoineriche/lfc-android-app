@@ -3,8 +3,6 @@ package com.gaminho.lfc.activity.edition;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -35,6 +33,7 @@ import com.google.android.gms.common.util.CollectionUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseError;
+import com.jakewharton.rxbinding4.widget.RxTextView;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -47,6 +46,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import io.reactivex.rxjava3.disposables.Disposable;
 
 /**
  * Created by Bonnie on 11/04/2022
@@ -68,6 +70,7 @@ public class EditionActivity extends AppCompatActivity implements View.OnClickLi
     private final ObservableField<Collection<Location>> obsLocations = new ObservableField<>();
     private LocationAdapter mLocationAdapter;
     private ELVServiceAndShowAdapter expandableListAdapter;
+    private Disposable formObserver;
 
     private final List<LFCPrestation> mLFCPrestations = new ArrayList<>();
 
@@ -125,24 +128,13 @@ public class EditionActivity extends AppCompatActivity implements View.OnClickLi
 
         binding.etPickDate.setOnClickListener(this);
 
+        this.formObserver = io.reactivex.rxjava3.core.Observable
+                .combineLatest(RxTextView.textChanges(binding.etEditionNumber),
+                        RxTextView.textChanges(binding.etPickDate),
+                        (editionNumber, sDate) -> Stream.of(editionNumber, sDate).noneMatch(StringUtils::isBlank))
+                .subscribe(isValid -> binding.btnSaveEdition.setEnabled(isValid));
+
         mETEdition = binding.etEditionNumber;
-        mETEdition.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                toggleSaveButton();
-            }
-        });
-
         this.obsEdition.addOnPropertyChangedCallback(fetchEditionListener);
 
         if (StringUtils.isNotBlank(getIntent().getStringExtra(ARG_EDITION_ID))) {
@@ -159,7 +151,14 @@ public class EditionActivity extends AppCompatActivity implements View.OnClickLi
             onPrestationClick(prestation);
             return true;
         });
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (Objects.nonNull(this.formObserver)) {
+            this.formObserver.dispose();
+        }
     }
 
     @Override
@@ -236,18 +235,6 @@ public class EditionActivity extends AppCompatActivity implements View.OnClickLi
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
         currentDate = LocalDate.of(year, month + 1, day);
         binding.etPickDate.setText(DateParser.formatLocalDate(currentDate));
-        toggleSaveButton();
-    }
-
-    protected void toggleSaveButton() {
-        final boolean isDateValid = StringUtils.isNotBlank(binding.etPickDate.getText());
-        boolean isEditionValid;
-        try {
-            isEditionValid = Integer.parseInt(mETEdition.getText().toString()) > 0;
-        } catch (Exception e) {
-            isEditionValid = false;
-        }
-        binding.btnSaveEdition.setEnabled(isEditionValid && isDateValid);
     }
 
     @Override
