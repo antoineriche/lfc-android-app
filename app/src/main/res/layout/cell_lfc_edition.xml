@@ -27,10 +27,10 @@
                 android:id="@+id/cell_edition_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@color/purple_500"
-                android:text="Édition #9"/>
+                android:text="@string/default_edition"/>
 
             <TextView
                 android:id="@+id/cell_edition_date"
@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textColor="@color/purple_200"
-                android:text="26/04/2022"/>
+                android:text="@string/default_location"/>
 
         </LinearLayout>
 
@@ -55,16 +55,16 @@
                 android:id="@+id/cell_edition_detail_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16dp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@color/teal_700"
-                android:text="."/>
+                android:text="@string/default_date"/>
 
             <TextView
                 android:id="@+id/cell_edition_detail_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Details"/>
+                android:text="@string/details"/>
 
         </LinearLayout>
 

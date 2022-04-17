@@ -13,9 +13,9 @@
     <string name="menu_edition">Édition</string>
     <string name="menu_slideshow">Slideshow</string>
 
-    <string name="save">Save</string>
-    <string name="delete">Delete</string>
-    <string name="cancel">Cancel</string>
+    <string name="save">Enregistrer</string>
+    <string name="delete">Supprimer</string>
+    <string name="cancel">Annuler</string>
 
     <!--EDITION ACTIVITY-->
     <string name="add_a_service">Ajouter un service</string>
@@ -23,4 +23,22 @@
     <string name="update_prestation">Modifier une prestation</string>
     <string name="remove_prestation">Supprimer la prestation</string>
     <string name="handle_edition_service">Gérer le staff</string>
+    <string name="amount">Montant</string>
+    <string name="default_amount">0</string>
+    <string name="fetching_editions">Récupération des éditions</string>
+    <string name="add_edition">Ajouter une édition</string>
+    <string name="example_elv_item_tv1">Léa</string>
+    <string name="example_elv_item_tv2">Vidéo</string>
+    <string name="artist">Artiste</string>
+    <string name="duration">Durée</string>
+    <string name="default_duration">30mn</string>
+    <string name="default_date">24/02/2022</string>
+    <string name="details">Details</string>
+    <string name="default_location">Le Fiacre</string>
+    <string name="default_edition">Édition #9</string>
+    <string name="location">Emplacement</string>
+    <string name="date">Date</string>
+    <string name="edition">Edition</string>
+    <string name="fetching_edition">Récupération de l\'édition</string>
+    <string name="edit_edition_facture">Éditer la facture</string>
 </resources>

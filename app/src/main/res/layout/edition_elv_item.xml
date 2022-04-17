@@ -13,7 +13,7 @@
         android:textColor="@android:color/black"
         android:paddingVertical="10dp"
         android:layout_weight="1"
-        android:text="Léa"/>
+        android:text="@string/example_elv_item_tv1"/>
 
     <TextView
         android:id="@+id/tv_desc"
@@ -23,7 +23,7 @@
         android:paddingVertical="10dp"
         android:layout_weight="1"
         android:textAlignment="center"
-        android:text="Vidéo"/>
+        android:text="@string/example_elv_item_tv2"/>
 
     <TextView
         android:id="@+id/tv_price"
@@ -32,6 +32,7 @@
         android:textColor="@android:color/black"
         android:paddingVertical="10dp"
         android:layout_weight="1"
+        android:text="@string/default_amount"
         android:textAlignment="textEnd"/>
 
 </LinearLayout>

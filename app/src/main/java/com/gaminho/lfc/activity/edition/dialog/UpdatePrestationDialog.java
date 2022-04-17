@@ -1,5 +1,6 @@
 package com.gaminho.lfc.activity.edition.dialog;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 
@@ -24,6 +25,20 @@ public class UpdatePrestationDialog extends AddingItemDialog<LFCPrestation, Edit
         super(context, listener);
         this.mListener = listener;
         this.mLFCPrestation = prestation;
+        
+        setMListener(new LFCDialogListener() {
+            @Override
+            public void onPositiveClick(AlertDialog alertDialog) {
+                final LFCPrestation entity = extractItemFromBinding(mBinding);
+                mListener.onItemAddClick(entity, alertDialog);
+            }
+
+            @Override
+            public void onNeutralClick(AlertDialog alertDialog) {
+                mListener.onDeletePrestationClick(mLFCPrestation);
+                alertDialog.dismiss();
+            }
+        });
     }
 
     @Override
@@ -37,15 +52,19 @@ public class UpdatePrestationDialog extends AddingItemDialog<LFCPrestation, Edit
     }
 
     @Override
+    protected boolean needNeutralButton() {
+        return true;
+    }
+
+    @Override
+    protected int getNeutralButtonResourceId() {
+        return R.string.remove_prestation;
+    }
+
+    @Override
     protected void initView(EditionDialogUpdatePrestationBinding binding, Context context) {
         super.initView(binding, context);
-
         binding.etPrice.setText(String.valueOf(mLFCPrestation.getPrestationPrice()));
-
-        binding.btnRemove.setOnClickListener(v -> {
-            this.mListener.onDeletePrestationClick(mLFCPrestation);
-            dismiss();
-        });
     }
 
     @Override

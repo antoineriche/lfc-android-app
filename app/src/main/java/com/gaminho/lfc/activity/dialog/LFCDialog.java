@@ -20,6 +20,7 @@ public abstract class LFCDialog<B extends ViewBinding> {
     private final Context mContext;
     protected final B mBinding;
     private LFCDialogListener mListener;
+
     private AlertDialog alertDialog;
 
     public LFCDialog(Context context,
@@ -47,6 +48,10 @@ public abstract class LFCDialog<B extends ViewBinding> {
         return android.R.string.ok;
     }
 
+    protected int getNeutralButtonResourceId() {
+        return android.R.string.ok;
+    }
+
     protected void dismiss() {
         if (Objects.nonNull(alertDialog)) {
             alertDialog.dismiss();
@@ -55,12 +60,21 @@ public abstract class LFCDialog<B extends ViewBinding> {
 
     protected AlertDialog build() {
         initView(mBinding, mContext);
-        return new AlertDialog.Builder(mContext)
+        final AlertDialog.Builder builder = new AlertDialog.Builder(mContext)
                 .setView(mBinding.getRoot())
                 .setTitle(getTitleResourceId())
                 .setNegativeButton(getNegativeButtonResourceId(), null)
-                .setPositiveButton(getPositiveButtonResourceId(), null)
-                .create();
+                .setPositiveButton(getPositiveButtonResourceId(), null);
+
+        if (needNeutralButton()) {
+            builder.setNeutralButton(getNeutralButtonResourceId(), null);
+        }
+
+        return builder.create();
+    }
+
+    protected boolean needNeutralButton() {
+        return false;
     }
 
     public void show() {
@@ -83,6 +97,16 @@ public abstract class LFCDialog<B extends ViewBinding> {
             }
         });
 
+        if (needNeutralButton()) {
+            alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(v -> {
+                if (Objects.nonNull(mListener)) {
+                    mListener.onNeutralClick(alertDialog);
+                } else {
+                    alertDialog.dismiss();
+                }
+            });
+        }
+
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.save);
         alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setText(R.string.cancel);
     }
@@ -91,6 +115,9 @@ public abstract class LFCDialog<B extends ViewBinding> {
         void onPositiveClick(AlertDialog alertDialog);
         default void onNegativeClick(AlertDialog alertDialog) {
             alertDialog.dismiss();
+        }
+
+        default void onNeutralClick(AlertDialog alertDialog) {
         }
     }
 

@@ -16,7 +16,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Artiste"
+            android:text="@string/artist"
             android:textStyle="bold"/>
 
         <EditText
@@ -24,7 +24,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Artiste"
+            android:textAlignment="textEnd"
+            android:hint="@string/artist"
             android:inputType="text" />
 
     </LinearLayout>
@@ -39,7 +40,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Durée"
+            android:text="@string/duration"
             android:textStyle="bold"/>
 
         <EditText
@@ -47,7 +48,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="30mn"
+            android:textAlignment="textEnd"
+            android:hint="@string/default_duration"
             android:inputType="number" />
 
     </LinearLayout>
@@ -62,7 +64,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Montant"
+            android:text="@string/amount"
             android:textStyle="bold"/>
 
         <EditText
@@ -70,7 +72,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="0"
+            android:textAlignment="textEnd"
+            android:hint="@string/default_amount"
             android:inputType="number" />
 
     </LinearLayout>

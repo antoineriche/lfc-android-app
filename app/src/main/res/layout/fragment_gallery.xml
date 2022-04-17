@@ -9,7 +9,7 @@
     <TextView
         android:id="@+id/tv_loading_editions"
         style="@style/TextViewLoading"
-        android:text="Récupération des éditions"
+        android:text="@string/fetching_editions"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
@@ -33,6 +33,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:src="@drawable/ic_baseline_add_24"
-        android:contentDescription="ADD" />
+        android:contentDescription="@string/add_edition" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
