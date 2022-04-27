@@ -35,6 +35,7 @@ public class MainActivityrt extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_3);
         findViewById(R.id.add_edition).setOnClickListener(this);
+        findViewById(R.id.btn2).setOnClickListener(this);
     }
 
 
@@ -66,6 +67,10 @@ public class MainActivityrt extends AppCompatActivity implements View.OnClickLis
         staff.setTypes(Arrays.asList(ServiceType.PHOTO, ServiceType.VIDEO));
         staffService.saveStaff(staff, null);
 
+        staff.setName("Nakama Prod");
+        staff.setTypes(Collections.singletonList(ServiceType.VIDEO));
+        staffService.saveStaff(staff, null);
+
         staff.setName("Kazaam");
         staff.setTypes(Collections.singletonList(ServiceType.DJ));
         staffService.saveStaff(staff, null);
@@ -79,6 +84,10 @@ public class MainActivityrt extends AppCompatActivity implements View.OnClickLis
         staffService.saveStaff(staff, null);
 
         staff.setName("Rémy");
+        staff.setTypes(Collections.singletonList(ServiceType.JUDGE));
+        staffService.saveStaff(staff, null);
+
+        staff.setName("Public");
         staff.setTypes(Collections.singletonList(ServiceType.JUDGE));
         staffService.saveStaff(staff, null);
 

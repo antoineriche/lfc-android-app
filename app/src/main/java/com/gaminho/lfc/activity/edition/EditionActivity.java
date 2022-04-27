@@ -33,6 +33,7 @@ import com.gaminho.lfc.service.DBService;
 import com.gaminho.lfc.service.LFCEditionService;
 import com.gaminho.lfc.service.LocationService;
 import com.gaminho.lfc.utils.DateParser;
+import com.gaminho.lfc.utils.ParserUtils;
 import com.google.android.gms.common.util.CollectionUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -69,7 +70,6 @@ public class EditionActivity extends AppCompatActivity implements View.OnClickLi
     private LocalDate currentDate = LocalDate.now();
     private final LFCEditionService editionService = new LFCEditionService();
     private final LocationService locationService = new LocationService();
-    private EditText mETEdition;
     private ActivityEditionBinding binding;
     private final ObservableField<LFCEdition> obsEdition = new ObservableField<>();
     private final ObservableField<Collection<Location>> obsLocations = new ObservableField<>();
@@ -209,7 +209,7 @@ public class EditionActivity extends AppCompatActivity implements View.OnClickLi
 
     private LFCEdition buildEditionFromCurrentView() {
         final LFCEdition edition = new LFCEdition();
-        final int editionCount = Integer.parseInt(mETEdition.getText().toString());
+        final int editionCount = Integer.parseInt(binding.etEditionNumber.getText().toString());
         edition.setEdition(editionCount);
 
         final LocalDate localDate = LocalDate.parse(binding.etPickDate.getText().toString(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
@@ -217,6 +217,9 @@ public class EditionActivity extends AppCompatActivity implements View.OnClickLi
 
         final String location = ((Location) binding.spinnerLocation.getSelectedItem()).buildId();
         edition.setLocation(location);
+
+        final double advertisement = ParserUtils.extractDoubleFromTextView(binding.etAdvertisement);
+        edition.setAdvertisement(advertisement);
 
         final Map<Integer, List<LFCPrestation>> prestations = mLFCPrestations.stream()
                 .collect(Collectors.groupingBy(LFCPrestation::getPrestationType));
@@ -274,6 +277,8 @@ public class EditionActivity extends AppCompatActivity implements View.OnClickLi
     private void fillView(LFCEdition edition) {
         binding.etEditionNumber.setText(String.valueOf(edition.getEdition()));
         binding.etEditionNumber.setEnabled(false);
+
+        binding.etAdvertisement.setText(String.valueOf(edition.getAdvertisement()));
 
         final LocalDate localDate = LocalDate.ofEpochDay(edition.getDate());
         currentDate = localDate;

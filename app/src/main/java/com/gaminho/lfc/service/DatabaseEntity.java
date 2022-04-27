@@ -6,4 +6,5 @@ package com.gaminho.lfc.service;
 public interface DatabaseEntity {
 
     String buildId();
+
 }

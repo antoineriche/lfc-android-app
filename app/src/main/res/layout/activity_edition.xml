@@ -95,9 +95,37 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/ll_4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/ll_3"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:padding="8dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/advertisement"
+            android:textStyle="bold"/>
+
+        <EditText
+            android:id="@+id/et_advertisement"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="number"
+            android:textAlignment="textEnd"
+            android:hint="@string/default_amount"/>
+
+    </LinearLayout>
+
+
     <ExpandableListView
         android:id="@+id/elv_staff_and_show"
-        app:layout_constraintTop_toBottomOf="@+id/ll_3"
+        app:layout_constraintTop_toBottomOf="@+id/ll_4"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_height="wrap_content"

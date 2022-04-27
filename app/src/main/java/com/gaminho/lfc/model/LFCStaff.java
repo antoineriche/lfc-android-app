@@ -3,6 +3,8 @@ package com.gaminho.lfc.model;
 import com.gaminho.lfc.model.enumeration.ServiceType;
 import com.gaminho.lfc.service.DatabaseEntity;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.List;
 
 import lombok.Getter;
@@ -19,6 +21,7 @@ public class LFCStaff implements DatabaseEntity {
 
     @Override
     public String buildId() {
-        return name;
+        return StringUtils.isNotBlank(name) ?
+                name.toLowerCase().replaceAll("\\s+", "-") : null;
     }
 }

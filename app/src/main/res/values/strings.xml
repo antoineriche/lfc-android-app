@@ -38,6 +38,7 @@
     <string name="default_location">Le Fiacre</string>
     <string name="default_edition">Édition #9</string>
     <string name="location">Emplacement</string>
+    <string name="advertisement">Publicité</string>
     <string name="date">Date</string>
     <string name="edition">Edition</string>
     <string name="fetching_edition">Récupération de l\'édition</string>

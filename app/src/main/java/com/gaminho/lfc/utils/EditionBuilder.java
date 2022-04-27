@@ -72,6 +72,7 @@ public final class EditionBuilder {
         params.put("edition", edition.getEdition());
         params.put("date", DateParser.formatEpochDay(edition.getDate()));
         params.put("location", edition.getLocation());
+        params.put("advertisement", edition.getAdvertisement());
         params.put("artistSets", edition.getArtistSetList());
         params.put("services", edition.getEditionServices());
         params.put("totalPrice", edition.getTotalPrice());
