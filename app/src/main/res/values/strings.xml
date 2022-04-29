@@ -33,16 +33,19 @@
     <string name="artist">Artiste</string>
     <string name="duration">Durée</string>
     <string name="default_duration">30mn</string>
+    <string name="default_time">20h00</string>
     <string name="default_date">24/02/2022</string>
     <string name="details">Details</string>
     <string name="default_location">Le Fiacre</string>
     <string name="default_edition">Édition #9</string>
+    <string name="default_artist">Artiste</string>
     <string name="location">Emplacement</string>
     <string name="advertisement">Publicité</string>
     <string name="date">Date</string>
     <string name="edition">Edition</string>
     <string name="fetching_edition">Récupération de l\'édition</string>
     <string name="edit_edition_facture">Éditer la facture</string>
+    <string name="save_edition_program">Enregistrer le programme</string>
     <string name="delete_edition">Supprimer l\'édition</string>
 
     <!--LIQUIDITY FRAGMENT-->

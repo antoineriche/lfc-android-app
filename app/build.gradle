@@ -68,4 +68,6 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3:3.5'
 
     implementation 'com.jakewharton.rxbinding4:rxbinding:4.0.0'
+
+    implementation 'com.google.android.material:material:1.0.0'
 }

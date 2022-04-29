@@ -52,7 +52,7 @@ public abstract class DBService<T extends DatabaseEntity> {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     final List<T> entities = new ArrayList<>();
                     for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                        entities.add(dsp.getValue(getTClass()));
+                        entities.add(readValueFromSnapshot(dsp));
                     }
                     entities.forEach(entity -> cache.put(entity.buildId(), entity));
                     if (Objects.nonNull(listener)) {
@@ -140,4 +140,7 @@ public abstract class DBService<T extends DatabaseEntity> {
         void onDeletionError(DatabaseError error);
     }
 
+    protected T readValueFromSnapshot(DataSnapshot snapshot) {
+        return snapshot.getValue(getTClass());
+    }
 }

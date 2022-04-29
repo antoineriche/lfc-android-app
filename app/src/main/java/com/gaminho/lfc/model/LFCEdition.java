@@ -21,6 +21,7 @@ public class LFCEdition implements DatabaseEntity, Serializable {
     private String location;
     private List<ArtistSet> artistSetList = new ArrayList<>();
     private List<EditionService> editionServices = new ArrayList<>();
+    private EditionProgram program;
 
     public double getTotalPrice() {
         return editionServices.stream().mapToDouble(EditionService::getPrice).sum()

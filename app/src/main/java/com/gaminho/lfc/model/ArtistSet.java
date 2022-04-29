@@ -13,10 +13,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @IgnoreExtraProperties
-public class ArtistSet implements DataCapsule, LFCPrestation {
+public class ArtistSet implements DataCapsule, LFCPrestation, ProgramEvent {
     private String artist;
     private int duration;
     private double price;
+    private long startTime;
 
     @Override
     @Exclude
@@ -58,5 +59,11 @@ public class ArtistSet implements DataCapsule, LFCPrestation {
     @Override
     public int getPrestationType() {
         return LFCPrestation.SHOWCASE;
+    }
+
+    @Exclude
+    @Override
+    public int getType() {
+        return ProgramEvent.SHOWCASE;
     }
 }
