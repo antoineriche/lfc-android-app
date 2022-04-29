@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.gaminho.lfc.activity.edition.ActivityEdition2;
 import com.gaminho.lfc.activity.edition.EditionActivity;
 import com.gaminho.lfc.adapter.LFCEditionAdapter;
 import com.gaminho.lfc.databinding.FragmentEditionBinding;
@@ -56,7 +57,7 @@ public class EditionFragment extends Fragment implements DBService.FetchingColle
     }
 
     protected void goToEditionActivity(final String editionId) {
-        final Intent intent = new Intent(getActivity(), EditionActivity.class);
+        final Intent intent = new Intent(getActivity(), ActivityEdition2.class);
         intent.putExtra(EditionActivity.ARG_EDITION_ID, editionId);
         startActivity(intent);
     }

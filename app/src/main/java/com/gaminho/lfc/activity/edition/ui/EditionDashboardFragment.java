@@ -1,17 +1,19 @@
-package com.gaminho.lfc.activity.edition;
+package com.gaminho.lfc.activity.edition.ui;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.Nullable;
 import androidx.databinding.Observable;
 import androidx.databinding.ObservableField;
 
@@ -22,7 +24,7 @@ import com.gaminho.lfc.activity.edition.dialog.UpdatePrestationDialog;
 import com.gaminho.lfc.adapter.ELVServiceAndShowAdapter;
 import com.gaminho.lfc.adapter.LocationAdapter;
 import com.gaminho.lfc.business.Html2Pdf;
-import com.gaminho.lfc.databinding.ActivityEditionBinding;
+import com.gaminho.lfc.databinding.FragmentEditionDashboardBinding;
 import com.gaminho.lfc.model.ArtistSet;
 import com.gaminho.lfc.model.EditionService;
 import com.gaminho.lfc.model.LFCEdition;
@@ -55,41 +57,25 @@ import java.util.stream.Stream;
 import io.reactivex.rxjava3.disposables.Disposable;
 
 /**
- * Created by Bonnie on 11/04/2022
+ * Created by Bonnie on 29/04/2022
  */
-public class EditionActivity extends AppCompatActivity implements View.OnClickListener,
+public class EditionDashboardFragment extends EditionFragment<FragmentEditionDashboardBinding>
+        implements View.OnClickListener,
         DatePickerDialog.OnDateSetListener,
         OnCompleteListener<Void>,
-        DBService.FetchingListener<LFCEdition>,
         Html2Pdf.OnCompleteConversion,
         ELVServiceAndShowAdapter.OnAddPrestationClickListener {
 
-    public static final String ARG_EDITION_ID = "edition-id";
-
     private LocalDate currentDate = LocalDate.now();
+
+    private LocationAdapter mLocationAdapter;
     private final LFCEditionService editionService = new LFCEditionService();
     private final LocationService locationService = new LocationService();
-    private ActivityEditionBinding binding;
-    private final ObservableField<LFCEdition> obsEdition = new ObservableField<>();
     private final ObservableField<Collection<Location>> obsLocations = new ObservableField<>();
-    private LocationAdapter mLocationAdapter;
     private ELVServiceAndShowAdapter expandableListAdapter;
     private Disposable formObserver;
 
     private final List<LFCPrestation> mLFCPrestations = new ArrayList<>();
-
-    private final Observable.OnPropertyChangedCallback fetchEditionListener = new Observable.OnPropertyChangedCallback() {
-        @Override
-        public void onPropertyChanged(Observable sender, int propertyId) {
-            final LFCEdition edition = obsEdition.get();
-            if (Objects.isNull(edition)) {
-                binding.tvLoadingEdition.setVisibility(View.VISIBLE);
-            } else {
-                fillView(edition);
-                obsEdition.removeOnPropertyChangedCallback(fetchEditionListener);
-            }
-        }
-    };
 
     private final Observable.OnPropertyChangedCallback fetchLocationListener = new Observable.OnPropertyChangedCallback() {
         @Override
@@ -103,12 +89,20 @@ public class EditionActivity extends AppCompatActivity implements View.OnClickLi
     };
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityEditionBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        setHasOptionsMenu(true);
+    }
 
-        mLocationAdapter = new LocationAdapter(this);
+    @Override
+    protected FragmentEditionDashboardBinding getBinding(@NonNull LayoutInflater inflater, ViewGroup container) {
+        return FragmentEditionDashboardBinding.inflate(inflater, container, false);
+    }
+
+    @Override
+    protected void initView(FragmentEditionDashboardBinding binding, LFCEdition edition) {
+
+        mLocationAdapter = new LocationAdapter(requireContext());
         binding.spinnerLocation.setAdapter(mLocationAdapter);
         binding.spinnerLocation.setEnabled(false);
 
@@ -121,7 +115,7 @@ public class EditionActivity extends AppCompatActivity implements View.OnClickLi
 
             @Override
             public void onError(DatabaseError error) {
-                Toast.makeText(getBaseContext(), "Error while getting locations: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireActivity(), "Error while getting locations: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -133,16 +127,7 @@ public class EditionActivity extends AppCompatActivity implements View.OnClickLi
                 .combineLatest(RxTextView.textChanges(binding.etEditionNumber),
                         RxTextView.textChanges(binding.etPickDate),
                         (editionNumber, sDate) -> Stream.of(editionNumber, sDate).noneMatch(StringUtils::isBlank))
-                .subscribe(isValid -> binding.btnSaveEdition.setEnabled(isValid));
-
-        this.obsEdition.addOnPropertyChangedCallback(fetchEditionListener);
-
-        if (StringUtils.isNotBlank(getIntent().getStringExtra(ARG_EDITION_ID))) {
-            this.obsEdition.set(null);
-            editionService.getEditionById(getIntent().getStringExtra(ARG_EDITION_ID), this);
-        } else {
-            binding.tvLoadingEdition.setVisibility(View.GONE);
-        }
+                .subscribe(binding.btnSaveEdition::setEnabled);
 
         expandableListAdapter = new ELVServiceAndShowAdapter(mLFCPrestations, this);
         binding.elvStaffAndShow.setAdapter(expandableListAdapter);
@@ -151,10 +136,36 @@ public class EditionActivity extends AppCompatActivity implements View.OnClickLi
             onPrestationClick(prestation);
             return true;
         });
+
+        binding.etEditionNumber.setText(String.valueOf(edition.getEdition()));
+        binding.etEditionNumber.setEnabled(false);
+
+        binding.etAdvertisement.setText(String.valueOf(edition.getAdvertisement()));
+
+        final LocalDate localDate = LocalDate.ofEpochDay(edition.getDate());
+        currentDate = localDate;
+        binding.etPickDate.setText(DateParser.formatLocalDate(localDate));
+
+        final LocationAdapter adapter = (LocationAdapter) binding.spinnerLocation.getAdapter();
+        if (Objects.nonNull(adapter)
+                && StringUtils.isNotBlank(edition.getLocation())) {
+            final int position = adapter.findPositionById(edition.getLocation());
+            binding.spinnerLocation.setSelection(position, true);
+        }
+
+        mLFCPrestations.clear();
+        mLFCPrestations.addAll(edition.getEditionServices());
+        mLFCPrestations.addAll(edition.getArtistSetList());
+        expandableListAdapter.notifyDataSetChanged();
+    }
+
+    protected void fillLocationSpinner(final List<Location> locations) {
+        mLocationAdapter.updateList(locations);
+        binding.spinnerLocation.setEnabled(!locations.isEmpty());
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         if (Objects.nonNull(this.formObserver)) {
             this.formObserver.dispose();
@@ -162,10 +173,9 @@ public class EditionActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.activity_edition_menu, menu);
-        return true;
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.activity_edition_menu, menu);
     }
 
     @Override
@@ -174,6 +184,19 @@ public class EditionActivity extends AppCompatActivity implements View.OnClickLi
         if (itemId == R.id.action_edit_facture) {
             final LFCEdition edition = buildEditionFromCurrentView();
             editEditionFacture(edition, this);
+        } else if (itemId == R.id.action_delete_edition) {
+            editionService.deleteEdition(getLFCEdition().buildId(), new DBService.DeletionListener() {
+                @Override
+                public void onDeleted() {
+                    Toast.makeText(requireContext(), "L'édition a été supprimée", Toast.LENGTH_SHORT).show();
+                    quitActivity();
+                }
+
+                @Override
+                public void onDeletionError(DatabaseError error) {
+                    Toast.makeText(requireContext(), "Error while deleting edition: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
         }
         return true;
     }
@@ -181,7 +204,7 @@ public class EditionActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View view) {
         if (binding.etPickDate.equals(view)) {
-            new DatePickerDialog(EditionActivity.this, this,
+            new DatePickerDialog(requireContext(), this,
                     currentDate.getYear(), currentDate.getMonthValue() - 1, currentDate.getDayOfMonth())
                     .show();
         } else if (binding.btnSaveEdition.equals(view)) {
@@ -191,7 +214,7 @@ public class EditionActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void openStaffDialog() {
-        new AddEditionServiceDialog(this, (entity, alertDialog) -> {
+        new AddEditionServiceDialog(requireContext(), (entity, alertDialog) -> {
             mLFCPrestations.add(entity);
             expandableListAdapter.notifyDataSetChanged();
             alertDialog.dismiss();
@@ -199,7 +222,7 @@ public class EditionActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void openShowcaseDialog() {
-        new AddShowcaseDialog(this, (entity, alertDialog) -> {
+        new AddShowcaseDialog(requireContext(), (entity, alertDialog) -> {
             mLFCPrestations.add(entity);
             expandableListAdapter.notifyDataSetChanged();
             alertDialog.dismiss();
@@ -227,9 +250,9 @@ public class EditionActivity extends AppCompatActivity implements View.OnClickLi
                 .map(lfcPrestation -> (EditionService) lfcPrestation)
                 .collect(Collectors.toList()));
 
-        edition.getEditionServices().addAll(prestations.getOrDefault(LFCPrestation.JUDGE, Collections.emptyList()).stream()
-                .map(lfcPrestation -> (EditionService) lfcPrestation)
-                .collect(Collectors.toList()));
+        //edition.getEditionServices().addAll(prestations.getOrDefault(LFCPrestation.JUDGE, Collections.emptyList()).stream()
+        //        .map(lfcPrestation -> (EditionService) lfcPrestation)
+        //        .collect(Collectors.toList()));
 
         edition.setArtistSetList(prestations.getOrDefault(LFCPrestation.SHOWCASE, Collections.emptyList()).stream()
                 .map(lfcPrestation -> (ArtistSet) lfcPrestation)
@@ -244,12 +267,7 @@ public class EditionActivity extends AppCompatActivity implements View.OnClickLi
 
     protected void editEditionFacture(final LFCEdition edition,
                                       final Html2Pdf.OnCompleteConversion completionListener) {
-        LFCEditionService.editFacture(edition, this, completionListener);
-    }
-
-    protected void fillLocationSpinner(final List<Location> locations) {
-        mLocationAdapter.updateList(locations);
-        binding.spinnerLocation.setEnabled(!locations.isEmpty());
+        LFCEditionService.editFacture(edition, requireContext(), completionListener);
     }
 
     @Override
@@ -260,52 +278,17 @@ public class EditionActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onComplete(@NonNull Task<Void> task) {
-        Toast.makeText(getBaseContext(), "L'édition a été enregistrée", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onFetched(LFCEdition entity) {
-        this.obsEdition.set(entity);
-    }
-
-    @Override
-    public void onError(DatabaseError error) {
-        Toast.makeText(getBaseContext(), "Error while getting edition: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-    }
-
-    private void fillView(LFCEdition edition) {
-        binding.etEditionNumber.setText(String.valueOf(edition.getEdition()));
-        binding.etEditionNumber.setEnabled(false);
-
-        binding.etAdvertisement.setText(String.valueOf(edition.getAdvertisement()));
-
-        final LocalDate localDate = LocalDate.ofEpochDay(edition.getDate());
-        currentDate = localDate;
-        binding.etPickDate.setText(DateParser.formatLocalDate(localDate));
-
-        binding.tvLoadingEdition.setVisibility(View.GONE);
-
-        final LocationAdapter adapter = (LocationAdapter) binding.spinnerLocation.getAdapter();
-        if (Objects.nonNull(adapter)
-                && StringUtils.isNotBlank(edition.getLocation())) {
-            final int position = adapter.findPositionById(edition.getLocation());
-            binding.spinnerLocation.setSelection(position, true);
-        }
-
-        mLFCPrestations.clear();
-        mLFCPrestations.addAll(edition.getEditionServices());
-        mLFCPrestations.addAll(edition.getArtistSetList());
+        Toast.makeText(requireContext(), "L'édition a été enregistrée", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onSuccess(String pdfName) {
-        Toast.makeText(this, "La facture " + pdfName + " a été éditée", Toast.LENGTH_SHORT)
-                .show();
+        Toast.makeText(requireContext(), "La facture " + pdfName + " a été éditée", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onFailed() {
-        Toast.makeText(getBaseContext(), "La facture n'a pas été éditée", Toast.LENGTH_SHORT).show();
+        Toast.makeText(requireContext(), "La facture n'a pas été éditée", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -319,7 +302,7 @@ public class EditionActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onPrestationClick(LFCPrestation prestation) {
-        new UpdatePrestationDialog(this, prestation, new UpdatePrestationDialog.UpdatePrestationListener() {
+        new UpdatePrestationDialog(requireContext(), prestation, new UpdatePrestationDialog.UpdatePrestationListener() {
             @Override
             public void onDeletePrestationClick(LFCPrestation prestation) {
                 mLFCPrestations.removeIf(p -> prestation.getPrestationId().equals(p.getPrestationId()));
@@ -337,4 +320,5 @@ public class EditionActivity extends AppCompatActivity implements View.OnClickLi
             }
         }).show();
     }
+
 }

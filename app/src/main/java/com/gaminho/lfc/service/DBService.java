@@ -107,6 +107,24 @@ public abstract class DBService<T extends DatabaseEntity> {
         });
     }
 
+    protected void deleteEntity(final String id,
+                                final DeletionListener listener) {
+        this.mReference.child(id).removeValue((databaseError, databaseReference) -> {
+            final boolean isSuccess = Objects.isNull(databaseError);
+            if (isSuccess) {
+                cache.remove(id);
+            }
+
+            if (Objects.nonNull(listener)) {
+                if (isSuccess) {
+                    listener.onDeleted();
+                } else {
+                    listener.onDeletionError(databaseError);
+                }
+            }
+        });
+    }
+
     public interface FetchingCollectionListener<T extends DatabaseEntity> {
         void onFetched(Collection<T> entities);
         void onError(DatabaseError error);
@@ -115,6 +133,11 @@ public abstract class DBService<T extends DatabaseEntity> {
     public interface FetchingListener<T extends DatabaseEntity> {
         void onFetched(T entity);
         void onError(DatabaseError error);
+    }
+
+    public interface DeletionListener {
+        void onDeleted();
+        void onDeletionError(DatabaseError error);
     }
 
 }

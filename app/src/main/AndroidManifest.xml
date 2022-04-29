@@ -9,21 +9,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LFC">
-
         <activity
             android:name=".activity.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.LFC.NoActionBar">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".activity.edition.EditionActivity"/>
-        <activity android:name=".activity.MainActivityrt"/>
+        <activity android:name=".activity.edition.EditionActivity" />
+        <activity android:name=".activity.MainActivityrt" />
+        <activity android:name=".activity.edition.ActivityEdition2" />
     </application>
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

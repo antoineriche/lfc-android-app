@@ -2,6 +2,7 @@ package com.gaminho.lfc.model;
 
 import com.gaminho.lfc.service.DatabaseEntity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class LFCEdition implements DatabaseEntity {
+public class LFCEdition implements DatabaseEntity, Serializable {
     private int edition;
     private long date;
     private double advertisement;

@@ -43,6 +43,7 @@
     <string name="edition">Edition</string>
     <string name="fetching_edition">Récupération de l\'édition</string>
     <string name="edit_edition_facture">Éditer la facture</string>
+    <string name="delete_edition">Supprimer l\'édition</string>
 
     <!--LIQUIDITY FRAGMENT-->
     <string name="bank_account">Banque</string>
@@ -58,4 +59,8 @@
     <string name="coins05">Pièces 0.50</string>
     <string name="coins02">Pièces 0.20</string>
     <string name="coins01">Pièces 0.10</string>
+    <string name="title_activity_edition2">ActivityEdition2</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>

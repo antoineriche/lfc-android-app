@@ -41,6 +41,11 @@ public final class LFCEditionService extends DBService<LFCEdition> {
         super.getById(id, listener);
     }
 
+    public void deleteEdition(final String id,
+                              final DeletionListener listener) {
+        super.deleteEntity(id, listener);
+    }
+
     public static void editFacture(final LFCEdition edition,
                                    final Context context,
                                    final Html2Pdf.OnCompleteConversion completionListener) {
